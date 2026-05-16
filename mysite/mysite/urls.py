@@ -22,5 +22,11 @@ from . import views
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("",views.index,name="index"),
-    path("about",views.about,name="about")
+    path("about",views.about,name="about"),
+    path("removepunc",views.removepunc,name="removepunc"),
+    path("Capfirst",views.Capfirst,name="Capfirst"),
+    path("newlineremove",views.newlineremove,name="newlineremove"),
+    path("spaceremove",views.spaceremove,name="spaceremove"),
+    path("charcount",views.Charcount,name="charcount"),
+    path("analyze",views.analyze,name="analyze"),
 ]
