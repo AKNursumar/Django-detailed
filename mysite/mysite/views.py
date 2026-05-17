@@ -23,6 +23,41 @@ def Charcount(request):
 def analyze(request):
     djtext = request.GET.get('text', 'default')
     removepunc = request.GET.get('removepunc', 'off')
-    print(djtext)
-    print(removepunc)
-    return render(request,"index.html")
+    fullcaps = request.GET.get('fullcaps', 'off')
+    newlineremover = request.GET.get('newlineremover', 'off')
+    extraspaceremover = request.GET.get('extraspaceremover', 'off')
+    charcount = request.GET.get('charcount', 'off')
+
+    # print(djtext)
+    # print(removepunc)
+    analyzed = ""
+    punctuations = '''!"#$%&'()*+,-./:;<=>?@[]^_`{|}~'''
+    if removepunc == 'on':
+        for char in djtext:
+            if char not in punctuations:
+                analyzed += char
+        params = {'purpose':'remove punctuations','analyzed_text':analyzed}
+    elif fullcaps == 'on':
+        for char in djtext:
+            analyzed += char.upper()
+        params = {'purpose': 'Change to Uppercase', 'analyzed_text': analyzed}
+    elif newlineremover == 'on':
+        for char in djtext:
+            if char != '/n':
+                analyzed += char
+        params = {'purpose': 'removed newline', 'analyzed_text': analyzed}
+    elif extraspaceremover == 'on':
+        for index,char in enumerate(djtext):
+            if not(djtext[index] == ' ' and djtext[index+1] == ' '):
+                analyzed += char
+        params = {'purpose': 'removed extra spaced', 'analyzed_text': analyzed}
+    elif charcount == 'on':
+        count = 0
+        for char in djtext:
+            count += 1
+        analyzed = str(count)
+        params = {'purpose': 'Count Characters', 'analyzed_text': analyzed}
+    else:
+        analyzed = djtext
+        params = {'purpose':'to analyze text','analyzed_text':analyzed}
+    return render(request,"analyze.html",params)
